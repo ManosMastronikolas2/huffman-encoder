@@ -1,0 +1,6 @@
+The quick brown fox jumps over the lazy dog. 
+The dog was not lazy, it was just tired. 
+Testing word frequency is fun! Word frequency analysis helps in natural language processing.
+Can you count the words? The count should be accurate.
+Repeat: the, the, the, dog, dog, fox, jumps.
+Hello world! Welcome to the world of text processing and word counting.
