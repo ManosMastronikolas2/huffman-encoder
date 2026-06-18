@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra 
 TARGET = bin/huffman
 
-SRCS = main.c huffman.c heap.c
+SRCS = src/main.c src/huffman.c src/heap.c
 
 .PHONY: all clean run
 
