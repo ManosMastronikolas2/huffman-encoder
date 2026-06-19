@@ -15,61 +15,30 @@ int main(int argc, char** argv){
     FILE* out = fopen(argv[2], "w");
 
     if(!in){
-        printf("Error opening input file!\n");
+        printf("Error opening input file %s !\n", argv[1]);
         return -1;
     }
 
     if(!out){
-        printf("Error opening output file!\n");
+        printf("Error opening output file %s !\n", argv[2]);
         return -1;
     }
 
-    char* txt;
-    long size;
+    char c;
+    size_t freq;
 
-    //determine input size to allocate char array
-    fseek(in, 0L, SEEK_END);
-    size = ftell(in);
-    rewind(in);
+    initHeap(1024);
 
-    txt = (char*) malloc((size+1)*sizeof(char)); //this is where the contents of the file will be stored
-    if(!txt){
-        printf("MemAlloc failed!\n");
-        fclose(in);
-        fclose(out);
-        free(txt);
-        return -1;
+    while((c=fgetc(in)) != EOF){
+        freq = updLetterFreq(c);
+        insertMin(c, freq);
     }
 
-    //read file into char array
-    if(fread(txt, size, 1, in) != 1){
-        printf("File reading failed!\n");
-        fclose(in);
-        fclose(out);
-        free(txt);
-        return -1;
-    }
-
-    txt[size] = '\0';
-    /*huffman code here*/
-
-    word_t** words_list = findWordFreq(txt); //find freq of all words and store it in a word struct hash table
-    initHeap(1024); //init a minHeap with a capacity of 1024 entries (more than enough for starters)
-    //add every {word,freq} pair to minHeap
-    for(int i=0;i<HASH_SZ;i++){
-        word_t* chain = words_list[i];
-        while(chain){
-            insertMin(chain->word, chain->freq);
-            chain = chain->next;
-        }
-    }
-
-    printHeap(); //for error checking the heap
-
+    printFreqTable();
+    printHeap();
 
     fclose(in);
     fclose(out);
-    free(txt);
 
     return 0;
 }

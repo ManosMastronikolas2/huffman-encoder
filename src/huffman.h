@@ -2,15 +2,19 @@
 #define HUFFMAN_H
 
 #include <stdio.h>
+#define HASH_SZ 256
 
-#define HASH_SZ 5
-
-typedef struct word {
-	char* word;
+typedef struct letter{
+	char letter;
 	size_t freq;
-	struct word* next;
-} word_t;
+	struct letter* next;
+}letter_t;
 
-word_t** findWordFreq(char*);
+//inits freq table
+void initFreqTable(void);
+//updates the frequency of a letter
+size_t updLetterFreq(char);
+//prints table
+void printFreqTable();
 
 #endif

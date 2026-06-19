@@ -5,52 +5,58 @@
 #include <ctype.h>
 #include "huffman.h"
 
+letter_t* freq_table[HASH_SZ]; //hash table to store {letter, freq} pairs
 
-int hash(char *word){
 
-    int sum=0;
-    int i=0;
-    while(word[i]!='\0'){
-        sum += (int) word[i];
-        i++;
-    }
-
-    return sum%HASH_SZ;
+int hash(char c){
+    return ((int)c)%HASH_SZ;
 }
 
+//initializes freq table
+void initFreqTable(void){
 
+    for(int i=0;i<24;i++) freq_table[i] = NULL;
 
-//returns a list with word_t structs for all the distinct words in the string
-word_t** findWordFreq(char* str){
+}
 
-    const char *delimiters = " \t\r\n,.!?;:\"()[]{}";
-    word_t** hashmap = (word_t**) malloc(HASH_SZ*sizeof(word_t*));
+//updates the frequency of a letter in the hash table
+size_t updLetterFreq(char c){
 
-    for(int i=0;i<HASH_SZ;i++) hashmap[i] = NULL;
+    int hash_val = hash(c);
 
-    char* word = strtok(str, delimiters);
-    while(word){
-        for(size_t i=0;i<strlen(word);i++) word[i] = (char)tolower((unsigned char)word[i]);; 
-        
-        int hashval = hash(word);
-        word_t* chain = hashmap[hashval];
-        while(chain && strcmp(chain->word, word)) chain = chain->next;
+    letter_t* chain = freq_table[hash_val];
 
-        if(!chain){
-            word_t* new = (word_t*) malloc(sizeof(word_t));
-            new->word = strdup(word);
-            new->freq = 1;
+    while(chain && chain->letter != c) chain = chain->next;
 
-            new->next = hashmap[hashval];
-            hashmap[hashval] = new;
-        }else{
-            chain->freq++;
-        }
+    if(!chain){ //if letter not found, insert
 
+        letter_t* new = (letter_t*) malloc(sizeof(letter_t));
+        assert(new);
 
-        word = strtok(NULL, delimiters);
+        new->letter = c;
+        new->freq = 1;
+        new->next = freq_table[hash_val];
+        freq_table[hash_val] = new;
+
+        return new->freq;
+
     }
+    
+    chain->freq++;
+    return chain->freq;
 
+}
 
-    return hashmap;
+//for debugging
+void printFreqTable(){
+
+    printf("---------------FREQTABLE-----------------\n");
+
+    for(int i=0;i<HASH_SZ;i++){
+        letter_t* chain = freq_table[i];
+        while(chain){
+            printf("%c : %zu\n", chain->letter, chain->freq);
+            chain = chain->next;
+        }
+    }
 }

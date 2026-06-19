@@ -5,9 +5,9 @@
 #include <stdio.h>
 
 //insert a value into the minHeap
-void insertMin(char*, size_t);
+void insertMin(char, size_t);
 //extract root from minHeap
-word_t* extractMin();
+letter_t* extractMin();
 //init heap
 void initHeap(size_t);
 //print heap

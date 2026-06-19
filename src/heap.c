@@ -5,7 +5,7 @@
 #include "heap.h"
 
 typedef struct heap{
-    word_t* arr;
+    letter_t* arr;
     size_t curr_size;
     size_t capacity;
 } heap_t;
@@ -18,12 +18,12 @@ void initHeap(size_t capacity){
     assert(heap);
     heap->capacity = capacity;
     heap->curr_size = 0;
-    heap->arr = (word_t*) malloc(sizeof(word_t)*capacity);
+    heap->arr = (letter_t*) malloc(sizeof(letter_t)*capacity);
     assert(heap->arr);
 }
 
 //inserts a new word into the minHeap that is given as an argument
-void insertMin(char* word, size_t freq){
+void insertMin(char letter, size_t freq){
 
     assert(heap);
 
@@ -31,10 +31,10 @@ void insertMin(char* word, size_t freq){
 
         //allocate new, bigger heap, instead of reallocating existing one, to avoid nullptr in case of memory exhaustion
         heap->capacity *= 2;
-        word_t* new = (word_t*) malloc(sizeof(word_t)*heap->capacity);
+        letter_t* new = (letter_t*) malloc(sizeof(letter_t)*heap->capacity);
         assert(new);
 
-        memcpy(new, heap->arr, heap->curr_size*sizeof(word_t));
+        memcpy(new, heap->arr, heap->curr_size*sizeof(letter_t));
         
         free(heap->arr);
 
@@ -43,7 +43,7 @@ void insertMin(char* word, size_t freq){
 
     //insert at the bottom of the heap
     size_t curr = heap->curr_size;
-    heap->arr[curr].word = strdup(word);
+    heap->arr[curr].letter = letter;
     heap->arr[curr].freq = freq;
     heap->curr_size++;
 
@@ -52,7 +52,7 @@ void insertMin(char* word, size_t freq){
     size_t parent = (curr-1)/2;
     while(curr>0 && heap->arr[curr].freq < heap->arr[parent].freq){
 
-        word_t tmp = heap->arr[curr];
+        letter_t tmp = heap->arr[curr];
         heap->arr[curr] = heap->arr[parent];
         heap->arr[parent] = tmp;
 
@@ -64,19 +64,25 @@ void insertMin(char* word, size_t freq){
 
 //print heap
 void printHeap(){
+    printf("---------------HEAP-----------------\n");
     for(size_t i = 0; i < heap->curr_size; i++){
-        printf("%s : %zu\n", heap->arr[i].word, heap->arr[i].freq);
+        printf("%c : %zu\n", heap->arr[i].letter, heap->arr[i].freq);
     }
 }
 
-word_t* extractMin(){
+letter_t* extractMin(){
 
     if(heap->curr_size == 0) return NULL;
     
-    word_t* min = (word_t*) malloc(sizeof(word_t));
+    letter_t* min = (letter_t*) malloc(sizeof(letter_t));
     min->freq = heap->arr[0].freq;
-    min->word = heap->arr[0].word;
+    min->letter = heap->arr[0].letter;
 
+
+    int k = heap->arr[heap->curr_size-1].freq;
+    heap->curr_size--;
+
+    if(heap->curr_size==1) return min;
     
 
 
