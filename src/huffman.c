@@ -4,6 +4,9 @@
 #include <string.h>
 #include <ctype.h>
 #include "huffman.h"
+#include "heap.h"
+
+
 
 letter_t* freq_table[HASH_SZ]; //hash table to store {letter, freq} pairs
 
@@ -15,12 +18,12 @@ int hash(char c){
 //initializes freq table
 void initFreqTable(void){
 
-    for(int i=0;i<24;i++) freq_table[i] = NULL;
+    for(int i=0;i<HASH_SZ;i++) freq_table[i] = NULL;
 
 }
 
 //updates the frequency of a letter in the hash table
-size_t updLetterFreq(char c){
+void updLetterFreq(char c){
 
     int hash_val = hash(c);
 
@@ -38,12 +41,11 @@ size_t updLetterFreq(char c){
         new->next = freq_table[hash_val];
         freq_table[hash_val] = new;
 
-        return new->freq;
+        return;
 
     }
     
     chain->freq++;
-    return chain->freq;
 
 }
 
@@ -59,4 +61,24 @@ void printFreqTable(){
             chain = chain->next;
         }
     }
+}
+
+void encode(FILE* in){
+
+    char c;
+
+    initHeap(1024);
+
+    while((c=fgetc(in)) != EOF){
+        updLetterFreq(c);
+    }
+
+    for(int i=0;i<HASH_SZ;i++){
+        letter_t* chain = freq_table[i];
+        while(chain){
+            insertMin(chain->letter, chain->freq);
+            chain = chain->next;
+        }
+    }
+
 }

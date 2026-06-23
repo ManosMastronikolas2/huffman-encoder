@@ -10,11 +10,9 @@ typedef struct letter{
 	struct letter* next;
 }letter_t;
 
-//inits freq table
-void initFreqTable(void);
-//updates the frequency of a letter
-size_t updLetterFreq(char);
-//prints table
+//returns the encoding tree
+void encode(FILE*);
+//prints frequency table
 void printFreqTable();
 
 #endif
