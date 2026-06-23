@@ -24,15 +24,7 @@ int main(int argc, char** argv){
         return -1;
     }
 
-    char c;
-    size_t freq;
-
-    initHeap(1024);
-
-    while((c=fgetc(in)) != EOF){
-        freq = updLetterFreq(c);
-        insertMin(c, freq);
-    }
+    encode(in);
 
     printFreqTable();
     printHeap();
