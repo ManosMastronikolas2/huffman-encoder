@@ -19,11 +19,16 @@ void initHeap(size_t capacity){
     heap->capacity = capacity;
     heap->curr_size = 0;
     heap->arr = (letter_t*) malloc(sizeof(letter_t)*capacity);
+    for(size_t i=0;i<capacity;i++){
+        heap->arr[i].next = NULL;
+        heap->arr[i].lc = NULL;
+        heap->arr[i].rc = NULL;
+    }
     assert(heap->arr);
 }
 
 //inserts a new word into the minHeap that is given as an argument
-void insertMin(char letter, size_t freq){
+void insertMin(char letter, size_t freq, letter_t* lc, letter_t* rc){
 
     assert(heap);
 
@@ -45,6 +50,8 @@ void insertMin(char letter, size_t freq){
     size_t curr = heap->curr_size;
     heap->arr[curr].letter = letter;
     heap->arr[curr].freq = freq;
+    heap->arr[curr].lc = lc;
+    heap->arr[curr].rc = rc;
     heap->curr_size++;
 
 
@@ -77,6 +84,9 @@ letter_t* extractMin(){
     letter_t* min = (letter_t*) malloc(sizeof(letter_t));
     min->freq = heap->arr[0].freq;
     min->letter = heap->arr[0].letter;
+    min->next = NULL;
+    min->lc = NULL;
+    min->rc = NULL;
 
 
     heap->arr[0] = heap->arr[heap->curr_size-1];

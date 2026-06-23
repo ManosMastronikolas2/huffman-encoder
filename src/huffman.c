@@ -39,6 +39,8 @@ void updLetterFreq(char c){
         new->letter = c;
         new->freq = 1;
         new->next = freq_table[hash_val];
+        new->lc = NULL;
+        new->rc = NULL;
         freq_table[hash_val] = new;
 
         return;
@@ -69,16 +71,22 @@ void encode(FILE* in){
 
     initHeap(1024);
 
+    //calculate each letter's frequency
     while((c=fgetc(in)) != EOF){
         updLetterFreq(c);
     }
-
+    
+    //construct minHeap with {letter, frequency} entries
     for(int i=0;i<HASH_SZ;i++){
         letter_t* chain = freq_table[i];
         while(chain){
-            insertMin(chain->letter, chain->freq);
+            insertMin(chain->letter, chain->freq, NULL, NULL);
             chain = chain->next;
         }
     }
+
+    //construct tree
+
+   // while(){}
 
 }
