@@ -5,7 +5,7 @@
 #include "heap.h"
 
 typedef struct heap{
-    letter_t* arr;
+    letter_t* arr; //TODO: Convert to void* so it is not tied to huffman.h
     size_t curr_size;
     size_t capacity;
 } heap_t;
@@ -79,12 +79,30 @@ letter_t* extractMin(){
     min->letter = heap->arr[0].letter;
 
 
-    int k = heap->arr[heap->curr_size-1].freq;
+    heap->arr[0] = heap->arr[heap->curr_size-1];
     heap->curr_size--;
 
-    if(heap->curr_size==1) return min;
+    size_t curr = 0;
+    size_t left = 2 * curr + 1;
+    size_t right = 2 * curr + 2;
     
+    while(left < heap->curr_size) {
+        size_t smallest = curr;
 
+        if(heap->arr[left].freq < heap->arr[smallest].freq) smallest = left;
+
+        if(right < heap->curr_size && heap->arr[right].freq < heap->arr[smallest].freq) smallest = right;
+
+        if(smallest == curr) break; 
+
+        letter_t tmp = heap->arr[curr];
+        heap->arr[curr] = heap->arr[smallest];
+        heap->arr[smallest] = tmp;
+
+        curr = smallest;
+        left = 2 * curr + 1;
+        right = 2 * curr + 2;
+    }
 
 
     return min;
