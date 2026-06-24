@@ -117,3 +117,5 @@ letter_t* extractMin(){
 
     return min;
 }
+
+size_t getSize() { return heap->curr_size; }

@@ -65,6 +65,24 @@ void printFreqTable(){
     }
 }
 
+//traverse huffman tree and build codes
+void buildCodes(letter_t* root, char* code, int depth, char codes[256][256] ){
+
+    if(!root) return;
+
+    if(root->letter != '\0'){
+        code[depth] = '\0';
+        strcpy(codes[(unsigned char)root->letter], code);
+        return;
+    }
+
+    code[depth] = '0';
+    buildCodes(root->lc, code, depth + 1, codes);
+
+    code[depth] = '1';
+    buildCodes(root->rc, code, depth + 1, codes);
+}
+
 void encode(FILE* in){
 
     char c;
@@ -87,6 +105,25 @@ void encode(FILE* in){
 
     //construct tree
 
-   // while(){}
+    letter_t* l, *r;
+    while(getSize()>1){
+
+        l = extractMin();
+        r = extractMin();
+
+        insertMin('\0', l->freq+r->freq, l, r);
+
+    }
+
+    letter_t* root = extractMin();
+
+
+    char codes[256][256] = {0};
+    char letter_code[256] = {0};
+    buildCodes(root, letter_code, 0, codes);
+
+    for(int i=0;i<256;i++){
+        printf("%c : %s\n", (char)i, codes[i]);
+    }
 
 }

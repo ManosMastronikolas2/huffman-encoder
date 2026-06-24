@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "huffman.h"
-#include "heap.h"
 
+//TODO: Make this for general binary files, not just text
 int main(int argc, char** argv){
 
 
@@ -27,7 +27,6 @@ int main(int argc, char** argv){
     encode(in);
 
     printFreqTable();
-    printHeap();
 
     fclose(in);
     fclose(out);

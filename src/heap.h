@@ -12,5 +12,7 @@ letter_t* extractMin();
 void initHeap(size_t);
 //print heap
 void printHeap();
+//get size
+size_t getSize();
 
 #endif
