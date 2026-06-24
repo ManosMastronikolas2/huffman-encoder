@@ -84,9 +84,9 @@ letter_t* extractMin(){
     letter_t* min = (letter_t*) malloc(sizeof(letter_t));
     min->freq = heap->arr[0].freq;
     min->letter = heap->arr[0].letter;
-    min->next = NULL;
-    min->lc = NULL;
-    min->rc = NULL;
+    min->next = heap->arr[0].next;
+    min->lc = heap->arr[0].lc;
+    min->rc = heap->arr[0].rc;
 
 
     heap->arr[0] = heap->arr[heap->curr_size-1];

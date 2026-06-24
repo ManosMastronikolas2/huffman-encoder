@@ -83,7 +83,7 @@ void buildCodes(letter_t* root, char* code, int depth, char codes[256][256] ){
     buildCodes(root->rc, code, depth + 1, codes);
 }
 
-void encode(FILE* in){
+void encode(FILE* in, FILE* out){
 
     char c;
 
@@ -117,13 +117,19 @@ void encode(FILE* in){
 
     letter_t* root = extractMin();
 
+    assert(root);
 
     char codes[256][256] = {0};
     char letter_code[256] = {0};
     buildCodes(root, letter_code, 0, codes);
 
-    for(int i=0;i<256;i++){
-        printf("%c : %s\n", (char)i, codes[i]);
+
+    printf("---------------ENCODED FILE-----------------\n");
+    //output encoded file
+    rewind(in);
+    while((c=fgetc(in)) != EOF){
+        fputs(codes[(unsigned int)c], out);
+        printf("%s", codes[(unsigned int)c]);
     }
 
 }

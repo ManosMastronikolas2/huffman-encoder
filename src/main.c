@@ -24,9 +24,8 @@ int main(int argc, char** argv){
         return -1;
     }
 
-    encode(in);
+    encode(in,out);
 
-    printFreqTable();
 
     fclose(in);
     fclose(out);

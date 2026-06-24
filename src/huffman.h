@@ -13,8 +13,8 @@ typedef struct letter{
 }letter_t;
 
 
-//returns the encoding tree
-void encode(FILE*);
+//takes input file, encodes it and outputs the encoded stream in out file
+void encode(FILE*, FILE*);
 //prints frequency table
 void printFreqTable();
 
